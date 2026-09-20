@@ -32,8 +32,15 @@ public class Enemy : MonoBehaviour
 
     private void Circle()
     {
+        // calculate the distance between the enemy and the player
+        Vector3 distance = transform.position - player.transform.position;
+        float distanceSquared = distance.sqrMagnitude;
+
+        // adjust orbit speed based on distance
+        float currentOrbitSpeed = orbitSpeed + distanceSquared * 0.1f;
+
         //increases the angle over time
-        orbitAngle += orbitSpeed * Time.deltaTime;
+        orbitAngle += currentOrbitSpeed * Time.deltaTime;
         
         //finding the x and y position every call, cosine tells us the x position just by having the angle, and sin does the same for y
         float x = Mathf.Cos(orbitAngle) * radius;
@@ -55,6 +62,6 @@ public class Enemy : MonoBehaviour
         orbitAngle = Mathf.Atan2(enemyPos.y,enemyPos.x);
 
         radius = Random.Range(2f,6f);
-        orbitSpeed = Random.Range(1f,3f);
+        orbitSpeed = Random.Range(0.5f,1f);
     }
 }
